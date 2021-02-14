@@ -37,6 +37,7 @@ function SameGame() {
 
 	this.board = {};
 	this.focus_spots = new Set();
+	this.total_score = 0;
 
 	var c = document.getElementById("board");
 
@@ -48,6 +49,14 @@ function SameGame() {
 		}
 
 		this.draw();
+	}
+
+	this.update_score = function(new_recent) {
+		this.total_score += new_recent;
+		var total = document.getElementById('total');
+		total.innerHTML = ""+this.total_score;
+		var recent = document.getElementById('recent');
+		recent.innerHTML = "+"+new_recent;
 	}
 
 	this.search_adjacent = function(i, j) {
@@ -140,6 +149,8 @@ function SameGame() {
 				}
 
 				this.draw();
+
+				this.update_score(subtract.size**2);
 			}
 		}
 	}
