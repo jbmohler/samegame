@@ -5,7 +5,7 @@ var spotdiam = 36;
 var max_x = 800 / squaresize;
 var max_y = 600 / squaresize;
 
-var colors = ["blue", "red", "green", "magenta", "purple"];
+var colors = ["blue", "red", "green", "purple"];
 
 function random_color() {
 	var index = Math.floor(Math.random() * colors.length);
