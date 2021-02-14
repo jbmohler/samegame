@@ -79,7 +79,34 @@ function SameGame() {
 		if( adjacent.size > 1 ){ return adjacent;} else{ return new Set(); }
 	}
 
-	this.hover_mouse = function(e) {
+	this.collapse_holes = function(e) {
+		// create a new board with nulls only above or to the right; collapse
+		// the vertical lines down and move entire lines horizontally only when
+		// an entire vertical line is empty.
+
+		var newboard = [];
+		var column = 0;
+
+		for( var i = 0; i < max_x; i++ ) {
+			var row = max_y - 1;
+			for( var j = max_y - 1; j >= 0; j-- ) {
+				var k = keyfunc(i, j);
+				if( this.board[k] != null ){
+					var k2 = keyfunc(column, row);
+					//console.log(k+" -> "+k2);
+					newboard[k2] = this.board[k];
+					row--;
+				}
+			}
+			if( row < max_y - 1 ){
+				column++;
+			}
+		}
+
+		this.board = newboard;
+	}
+
+	this.event_in_cell = function(e) {
 		var cellx = Math.floor(e.offsetX / squaresize);
 		var celly = Math.floor(e.offsetY / squaresize);
 
@@ -88,7 +115,41 @@ function SameGame() {
 
 		var dsq = (cx - e.offsetX)**2 + (cy - e.offsetY)**2;
 		if( dsq < (spotdiam / 2)**2 ) {
-			this.focus_spots = this.search_adjacent(cellx, celly);
+			return [cellx, celly];
+		}else{
+			return null;
+		}
+	}
+
+	this.click_mouse = function(e) {
+		var coords = self.event_in_cell(e);
+		if( coords != null ) {
+			var subtract = this.search_adjacent(coords[0], coords[1]);
+
+			if( subtract != null ) {
+				//console.log("removing "+subtract.size+" cells");
+				subtract.forEach(k => {this.board[k] = null});
+
+				this.collapse_holes();
+
+				// update focus
+				if( coords != null && this.board[keyfunc(coords[0], coords[1])] != null ) {
+					this.focus_spots = this.search_adjacent(coords[0], coords[1]);
+				}else{
+					this.focus_spots = new Set();
+				}
+
+				this.draw();
+			}
+		}
+	}
+
+	c.addEventListener('mousedown', e => {this.click_mouse(e);});
+
+	this.hover_mouse = function(e) {
+		var coords = self.event_in_cell(e);
+		if( coords != null && this.board[keyfunc(coords[0], coords[1])] != null ) {
+			this.focus_spots = this.search_adjacent(coords[0], coords[1]);
 		}else{
 			this.focus_spots = new Set();
 		}
@@ -109,7 +170,9 @@ function SameGame() {
 				var f = this.board[k];
 				var highlight = this.focus_spots.has(k);
 
-				draw_spot(ctx, i, j, f, highlight);
+				if( f != null ) {
+					draw_spot(ctx, i, j, f, highlight);
+				}
 			}
 		}
 	}
