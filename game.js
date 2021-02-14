@@ -132,7 +132,7 @@ function SameGame() {
 
 	this.click_mouse = function(e) {
 		var coords = self.event_in_cell(e);
-		if( coords != null ) {
+		if( coords != null && this.board[keyfunc(coords[0], coords[1])] != null ) {
 			var subtract = this.search_adjacent(coords[0], coords[1]);
 
 			if( subtract != null ) {
@@ -190,7 +190,6 @@ function SameGame() {
 
 	return this;
 }
-
 
 function game_load() {
 	var game = SameGame();
