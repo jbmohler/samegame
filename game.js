@@ -1,16 +1,15 @@
 
+var schemes = {
+	"3color": ["#1722d6", "#6830b5", "#e731c2"],
+	"primary": ["blue", "red", "green"],
+	"4color": ["#8b1329", "#b83b5f", "#e3a2c2", "#c4f275"],
+	"4colora": ["#89c646", "#fdf122", "#30318d", "#666699"],
+}
 
 var squaresize = 40;
 var spotdiam = 36;
 var max_x = 800 / squaresize;
 var max_y = 600 / squaresize;
-
-var colors = ["blue", "red", "green", "purple"];
-
-function random_color() {
-	var index = Math.floor(Math.random() * colors.length);
-	return colors[index];
-}
 
 function draw_spot(ctx, x, y, fill, highlight) {
 	var cx = x*squaresize + squaresize/2;
@@ -34,21 +33,42 @@ function keyfunc(i, j){
 }
 
 function SameGame() {
-
-	this.board = {};
-	this.focus_spots = new Set();
-	this.total_score = 0;
-
 	var c = document.getElementById("board");
+	this.colors = schemes["3color"];
 
 	this.init = function() {
+		this.board = {};
+
 		for( var i = 0; i < max_x; i++ ){
 			for( var j = 0; j < max_y; j++ ){
-				this.board[keyfunc(i,j)] = random_color();
+				this.board[keyfunc(i,j)] = this.random_color();
 			}
 		}
 
+		this.focus_spots = new Set();
+
+		this.total_score = 0;
 		this.draw();
+	}
+
+	this.on_new = function() {
+		var color = document.getElementById('color_choices').value;
+		var size = document.getElementById('board_size').value;
+
+		this.colors = schemes[color];
+
+		max_x = {"small": 12, "medium": 20, "large": 28}[size];
+		max_y = {"small": 10, "medium": 15, "large": 21}[size];
+
+		c.width = max_x * squaresize;
+		c.height = max_y * squaresize;
+
+		this.init();
+	}
+
+	this.random_color = function() {
+		var index = Math.floor(Math.random() * this.colors.length);
+		return colors[index];
 	}
 
 	this.update_score = function(new_recent) {
@@ -213,5 +233,6 @@ function SameGame() {
 
 function game_load() {
 	var game = SameGame();
+	document.game = game;
 	game.init();
 }

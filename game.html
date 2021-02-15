@@ -15,6 +15,21 @@
 				Recent:  <span id="recent">+0</span><br />
 				<span id="gameover"></span><br />
 			</div>
+
+			<div id="gamesize">
+				<select id="color_choices">
+					<option value="3color">3 Colors</option>
+					<option value="primary">Primary (3)</option>
+					<option value="4color">4 Colors</option>
+					<option value="4colora">4 Colorsa</option>
+				</select><br /><br />
+				<select id="board_size"> 
+					<option value="small">Small</option>
+					<option value="medium">Medium</option>
+					<option value="large">Large</option>
+				</select><br /><br />
+				<input type="button" value="New Game" onclick="document.game.on_new()">
+			</div>
 		</div>
 	</body>
 </html>
