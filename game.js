@@ -1,9 +1,11 @@
 
 var schemes = {
+	"pathetic": ["yellow", "magenta"],
 	"3color": ["#1722d6", "#6830b5", "#e731c2"],
 	"primary": ["blue", "red", "green"],
 	"4color": ["#8b1329", "#b83b5f", "#e3a2c2", "#c4f275"],
 	"4colora": ["#89c646", "#fdf122", "#30318d", "#666699"],
+	"4xx": ["#ca98cb", "#5040ae", "#0399cb", "#336799"],
 }
 
 var squaresize = 40;
