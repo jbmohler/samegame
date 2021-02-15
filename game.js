@@ -57,6 +57,26 @@ function SameGame() {
 		total.innerHTML = ""+this.total_score;
 		var recent = document.getElementById('recent');
 		recent.innerHTML = "+"+new_recent;
+
+		// check if there are any legal moves
+		var has_legal = false;
+		console.log
+		for( var i = 0; i < max_x && !has_legal; i++ ){
+			for( var j = 0; j < max_y && !has_legal; j++ ){
+				if( this.board[keyfunc(i, j)] != null ){
+					var subtract = this.search_adjacent(i, j);
+					if( subtract.size > 0 ) {
+						has_legal = true;
+					}
+					console.log("("+i+", "+j+"):  "+has_legal+"  "+subtract);
+				}
+			}
+		}
+		console.log(""+has_legal);
+		if( !has_legal ){
+			var gameover = document.getElementById('gameover');
+			gameover.innerHTML = "Game Over!!";
+		}
 	}
 
 	this.search_adjacent = function(i, j) {
