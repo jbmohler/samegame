@@ -36,7 +36,10 @@ function keyfunc(i, j){
 
 function SameGame() {
 	var c = document.getElementById("board");
+
 	this.colors = schemes["3color"];
+	document.getElementById('color_choices').value = "3color";
+	document.getElementById('board_size').value = "medium";
 
 	this.init = function() {
 		this.board = {};
@@ -50,6 +53,7 @@ function SameGame() {
 		this.focus_spots = new Set();
 
 		this.total_score = 0;
+		this.update_score(0);
 		this.draw();
 	}
 
@@ -82,7 +86,6 @@ function SameGame() {
 
 		// check if there are any legal moves
 		var has_legal = false;
-		console.log
 		for( var i = 0; i < max_x && !has_legal; i++ ){
 			for( var j = 0; j < max_y && !has_legal; j++ ){
 				if( this.board[keyfunc(i, j)] != null ){
@@ -90,14 +93,15 @@ function SameGame() {
 					if( subtract.size > 0 ) {
 						has_legal = true;
 					}
-					console.log("("+i+", "+j+"):  "+has_legal+"  "+subtract);
 				}
 			}
 		}
-		console.log(""+has_legal);
+
+		var gameover = document.getElementById('gameover');
 		if( !has_legal ){
-			var gameover = document.getElementById('gameover');
 			gameover.innerHTML = "Game Over!!";
+		} else {
+			gameover.innerHTML = "";
 		}
 	}
 
